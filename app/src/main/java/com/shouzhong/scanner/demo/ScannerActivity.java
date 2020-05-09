@@ -32,10 +32,10 @@ public class ScannerActivity extends AppCompatActivity {
     private SwitchCompat scBankCard;
     private SwitchCompat scIdCard;
     private SwitchCompat scLicensePlate;
-    private SwitchCompat scLicensePlate2;
+    private SwitchCompat scIdCard2;
+    private SwitchCompat scDrivingLicense;
 
     private Vibrator vibrator;
-    private long session;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +49,8 @@ public class ScannerActivity extends AppCompatActivity {
         scBankCard = findViewById(R.id.sc_bank);
         scIdCard = findViewById(R.id.sc_id_card);
         scLicensePlate = findViewById(R.id.sc_license_plate);
-        scLicensePlate2 = findViewById(R.id.sc_license_plate2);
+        scIdCard2 = findViewById(R.id.sc_id_card2);
+        scDrivingLicense = findViewById(R.id.sc_driving_license);
         scannerView.setShouldAdjustFocusArea(true);
         scannerView.setViewFinder(new ViewFinder(this));
 //        scannerView.setViewFinder(new ViewFinder2());
@@ -101,10 +102,16 @@ public class ScannerActivity extends AppCompatActivity {
                 scannerView.setEnableLicensePlate(isChecked);
             }
         });
-        scLicensePlate2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        scIdCard2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                scannerView.setEnableLicensePlate2(isChecked);
+                scannerView.setEnableIdCard2(isChecked);
+            }
+        });
+        scDrivingLicense.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                scannerView.setEnableDrivingLicense(isChecked);
             }
         });
     }
@@ -138,9 +145,9 @@ public class ScannerActivity extends AppCompatActivity {
 
     class ViewFinder extends View implements IViewFinder {
         private Rect framingRect;//扫码框所占区域
-        private float widthRatio = 0.8f;//扫码框宽度占view总宽度的比例
+        private float widthRatio = 0.9f;//扫码框宽度占view总宽度的比例
         private float heightRatio = 0.8f;
-        private float heightWidthRatio = 1f;//扫码框的高宽比
+        private float heightWidthRatio = 0.5626f;//扫码框的高宽比
         private int leftOffset = -1;//扫码框相对于左边的偏移量，若为负值，则扫码框会水平居中
         private int topOffset = -1;//扫码框相对于顶部的偏移量，若为负值，则扫码框会竖直居中
 
@@ -247,8 +254,8 @@ public class ScannerActivity extends AppCompatActivity {
             Point viewSize = new Point(getWidth(), getHeight());
             int width = getWidth() * 801 / 1080, height = getWidth() * 811 / 1080;
             width = (int) (getWidth() * widthRatio);
-            height = (int) (getHeight() * heightRatio);
-//            height = (int) (heightWidthRatio * width);
+//            height = (int) (getHeight() * heightRatio);
+            height = (int) (heightWidthRatio * width);
 
             int left, top;
             if (leftOffset < 0) {
